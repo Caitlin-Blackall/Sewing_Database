@@ -1,19 +1,24 @@
 import csv
 
-def create_spreadsheet():
+def create_spreadsheet(data_toadd):
+    data = data_toadd
     field_names = ['Pattern Name', 'Category', 'Size', 'Printed Pattern', 'Completed', 'Notes']
-
-    with open('data.csv', 'w+') as csv_file:
-        base_spreadsheet = csv.DictWriter(csv_file, fieldnames=field_names)
-        base_spreadsheet.writeheader()
+    count = 0
+    with open('data.csv', 'r') as data_csv:
+        base_spreadsheet = csv.DictReader(data_csv)
+        for row in base_spreadsheet:
+            count += 1
+        data_csv.close()
+    with open('data.csv', 'a') as data_csv:
+        base_spreadsheet = csv.DictWriter(data_csv, fieldnames=field_names)
+        if count == 0:
+            base_spreadsheet.writeheader()
+            base_spreadsheet.writerow(data)
+        else:
+            base_spreadsheet.writerow(data)
     return base_spreadsheet
 
-def check_data():
-    if exists:
-        return True
-    else:
-        return False
-def add_data():
+def enter_data():
     name = input('Enter pattern name: ')
 
     check = check_data(name)
@@ -26,18 +31,22 @@ def add_data():
     completed = input('Has this pattern been sewn? Y/N ')
     notes = input('Any notes to add about this pattern? ')
 
-    data = [{'Pattern Name': name, 'Category': category, 'Size': size, 'Printed Pattern': printed, 'Completed': completed, 'Notes': notes}]
+    data_toadd = {'Pattern Name': name, 'Category': category, 'Size': size, 'Printed Pattern': printed, 'Completed': completed, 'Notes': notes}
 
-def read_data():
-    data = []
+    return data_toadd
+
+def check_data(name):
     with open('data.csv', 'r') as data_csv:
         spreadsheet = csv.DictReader(data_csv)
         for row in spreadsheet:
-            data.append(row)
-    return data
+            if row['Pattern Name'] == name:
+                return True
+            else:
+                return False
 
 def run():
-    spreadsheet = create_spreadsheet()
+    data_toadd = enter_data()
+    spreadsheet = create_spreadsheet(data_toadd)
     return spreadsheet
 
 run()
