@@ -19,17 +19,17 @@ def create_spreadsheet(data_toadd):
     return base_spreadsheet
 
 def enter_data():
-    name = input('Enter pattern name: ')
+    name = input('Enter pattern name: ').title()
 
     check = check_data(name)
     if check == True:
         return 'This pattern already exists'
 
-    category = input('Enter category: ')
-    size = input('Enter pattern size: ')
-    printed = input('Has this pattern been printed? Y/N ')
-    completed = input('Has this pattern been sewn? Y/N ')
-    notes = input('Any notes to add about this pattern? ')
+    category = input('Enter category: ').title()
+    size = input('Enter pattern size: ').title()
+    printed = input('Has this pattern been printed? Y/N ').upper()
+    completed = input('Has this pattern been sewn? Y/N ').upper()
+    notes = input('Any notes to add about this pattern? ').capitalize()
 
     data_toadd = {'Pattern Name': name, 'Category': category, 'Size': size, 'Printed Pattern': printed, 'Completed': completed, 'Notes': notes}
 
@@ -45,16 +45,26 @@ def check_data(name):
                 return False
 
 def search():
-    item = "Yay"
-    return print(item)
+    parameter = input('Do you want to search by pattern category (A) or printed patterns (B)? ').upper()
+    if parameter == 'A':
+        item = 'Yay'
+        print('The pattern/s that match the search are {}'.format(item))
+
+def update():
+    print('Done')
 
 def run():
-    run_option = input("Do you want to search (S) or add (A) a pattern? ")
-    if run_option == "S":
+    run_option = input('Do you want to search (S), add (A) a pattern or updated (U) a pattern? ').upper()
+    if run_option == 'S':
         return search()
-    else:
+    elif run_option == 'A':
         data_toadd = enter_data()
         spreadsheet = create_spreadsheet(data_toadd)
         return spreadsheet
+    elif run_option == 'U':
+        return update()
+    else:
+        print('Invalid response, please try again')
+        run()
 
 run()
