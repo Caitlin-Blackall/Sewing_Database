@@ -12,3 +12,5 @@ these patterns to find an appropriate pattern.
 + Searching the database for patterns
 + Updating pattern information
 + Adding pictures to the pattern information
++ Selecting pattern category (ie. not just typing for error handling purposes)
++ 
