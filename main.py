@@ -44,9 +44,17 @@ def check_data(name):
             else:
                 return False
 
+def search():
+    item = "Yay"
+    return print(item)
+
 def run():
-    data_toadd = enter_data()
-    spreadsheet = create_spreadsheet(data_toadd)
-    return spreadsheet
+    run_option = input("Do you want to search (S) or add (A) a pattern? ")
+    if run_option == "S":
+        return search()
+    else:
+        data_toadd = enter_data()
+        spreadsheet = create_spreadsheet(data_toadd)
+        return spreadsheet
 
 run()
