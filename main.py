@@ -1,4 +1,6 @@
 import csv
+import tkinter
+from tkinter import ttk
 
 def create_spreadsheet(data_toadd):
     data = data_toadd
@@ -30,13 +32,89 @@ def enter_data():
         else:
             return None
 
-    category = input('Enter category: ').title()
+    #category = input('Enter category: ').title()
+    category = []
+    categories_toadd = ''
+    new_cat = tkinter.Tk()
+    new_cat.title('Select Pattern Category / Categories')
+    frm = ttk.Frame(new_cat, padding=10)
+    frm.grid()
+    #add widgets here
+
+    CheckVar1 = tkinter.IntVar()
+    CheckVar2 = tkinter.IntVar()
+    CheckVar3 = tkinter.IntVar()
+    CheckVar4 = tkinter.IntVar()
+    CheckVar5 = tkinter.IntVar()
+    CheckVar6 = tkinter.IntVar()
+    CheckVar7 = tkinter.IntVar()
+    CheckVar8 = tkinter.IntVar()
+    C1 = tkinter.Checkbutton(frm, text = 'Bathers', variable=CheckVar1, onvalue = 1, offvalue = 0, height=2, width=20)
+    C2 = tkinter.Checkbutton(frm, text='Bottoms', variable=CheckVar2, onvalue=1, offvalue=0, height=2, width=20)
+    C3 = tkinter.Checkbutton(frm, text='Dresses', variable=CheckVar3, onvalue=1, offvalue=0, height=2, width=20)
+    C4 = tkinter.Checkbutton(frm, text='Jumpers', variable=CheckVar4, onvalue=1, offvalue=0, height=2, width=20)
+    C5 = tkinter.Checkbutton(frm, text='Male', variable=CheckVar5, onvalue=1, offvalue=0, height=2, width=20)
+    C6 = tkinter.Checkbutton(frm, text='Misc', variable=CheckVar6, onvalue=1, offvalue=0, height=2, width=20)
+    C7 = tkinter.Checkbutton(frm, text='Rompers', variable=CheckVar7, onvalue=1, offvalue=0, height=2, width=20)
+    C8 = tkinter.Checkbutton(frm, text='Tops', variable=CheckVar8, onvalue=1, offvalue=0, height=2, width=20)
+    finish = tkinter.Button(frm, text = 'Press to finish', command=new_cat.destroy)
+
+    C1.pack()
+    C2.pack()
+    C3.pack()
+    C4.pack()
+    C5.pack()
+    C6.pack()
+    C7.pack()
+    C8.pack()
+    finish.pack(padx=20)
+
+    new_cat.mainloop()
+
+    add_bathers = CheckVar1.get()
+    add_bottoms = CheckVar2.get()
+    add_dresses = CheckVar3.get()
+    add_jumpers = CheckVar4.get()
+    add_male = CheckVar5.get()
+    add_misc = CheckVar6.get()
+    add_rompers = CheckVar7.get()
+    add_tops = CheckVar8.get()
+
+    if add_bathers == 1:
+        category.append('Bathers')
+    if add_bottoms == 1:
+        category.append('Bottoms')
+    if add_dresses == 1:
+        category.append('Dresses')
+    if add_jumpers == 1:
+        category.append('Jumpers')
+    if add_male == 1:
+        category.append('Male')
+    if add_misc == 1:
+        category.append('Misc')
+    if add_rompers == 1:
+        category.append('Rompers')
+    if add_tops == 1:
+        category.append('Tops')
+
+    #print(category)
+    x = len(category)
+    for cats in category:
+        index = category.index(cats)
+        if index == (x - 1):
+            categories_toadd += cats
+        else:
+            categories_toadd += cats + ', '
+
+    #print(categories_toadd)
+
+
     size = input('Enter pattern size: ').title()
     printed = input('Has this pattern been printed? Y/N ').upper()
     completed = input('Has this pattern been sewn? Y/N ').upper()
     notes = input('Any notes to add about this pattern? ').capitalize()
 
-    data_toadd = {'Pattern Name': name, 'Category': category, 'Size': size, 'Printed Pattern': printed, 'Completed': completed, 'Notes': notes}
+    data_toadd = {'Pattern Name': name, 'Category': categories_toadd, 'Size': size, 'Printed Pattern': printed, 'Completed': completed, 'Notes': notes}
 
     return data_toadd
 
