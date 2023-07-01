@@ -65,14 +65,17 @@ S2.grid(row=5, column=2, sticky='W')
 label_6 = tkinter.Label(frame, text='Pattern Notes:', pady=10)
 label_6.grid(row=6, column=0, sticky='W')
 e6 = tkinter.Entry(frame, width=38)
-e6.grid(row = 6, column = 1, columnspan=4, pady = 2, ipady=15)
+e6.grid(row = 6, column=1, columnspan=4, pady = 2, ipady=15)
+
+finish = tkinter.Button(frame, text = 'Finished', command=master.destroy, height=2, width=14, pady=2)
+finish.grid(row=7, column=3, columnspan=2, sticky='W')
 
 master.mainloop()
 
 
 
 
-
+'''
 add_bathers = CheckVar1.get()
 add_bottoms = CheckVar2.get()
 add_dresses = CheckVar3.get()
@@ -108,4 +111,4 @@ for cats in category:
     else:
         categories_toadd += cats + ', '
 
-#print(categories_toadd)
+#print(categories_toadd)'''
