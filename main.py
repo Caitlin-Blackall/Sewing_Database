@@ -54,7 +54,7 @@ def update():
     print('Done')
 
 def run():
-    run_option = input('Do you want to search (S), add (A) a pattern or updated (U) a pattern? ').upper()
+    run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
     if run_option == 'S':
         return search()
     elif run_option == 'A':
@@ -63,6 +63,8 @@ def run():
         return spreadsheet
     elif run_option == 'U':
         return update()
+    elif run_option == 'Q':
+        return None
     else:
         print('Invalid response, please try again')
         run()
