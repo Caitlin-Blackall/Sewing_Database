@@ -23,7 +23,12 @@ def enter_data():
 
     check = check_data(name)
     if check == True:
-        return 'This pattern already exists'
+        print('This pattern already exists')
+        next_steps = input('Do you want to do something else? Y/N ').upper()
+        if next_steps == 'Y':
+            run()
+        else:
+            return None
 
     category = input('Enter category: ').title()
     size = input('Enter pattern size: ').title()
