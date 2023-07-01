@@ -67,48 +67,73 @@ label_6.grid(row=6, column=0, sticky='W')
 e6 = tkinter.Entry(frame, width=38)
 e6.grid(row = 6, column=1, columnspan=4, pady = 2, ipady=15)
 
-finish = tkinter.Button(frame, text = 'Finished', command=master.destroy, height=2, width=14, pady=2)
+def get_data():
+    name = e1.get()
+
+    check = check_data(name)
+    if check == True:
+        print('This pattern already exists')
+        next_steps = input('Do you want to do something else? Y/N ').upper()
+        if next_steps == 'Y':
+            run()
+        else:
+            return None
+
+    category = []
+    add_bathers = CheckVar1.get()
+    add_bottoms = CheckVar2.get()
+    add_dresses = CheckVar3.get()
+    add_jumpers = CheckVar4.get()
+    add_male = CheckVar5.get()
+    add_misc = CheckVar6.get()
+    add_rompers = CheckVar7.get()
+    add_tops = CheckVar8.get()
+
+    if add_bathers == 1:
+        category.append('Bathers')
+    if add_bottoms == 1:
+        category.append('Bottoms')
+    if add_dresses == 1:
+        category.append('Dresses')
+    if add_jumpers == 1:
+        category.append('Jumpers')
+    if add_male == 1:
+        category.append('Male')
+    if add_misc == 1:
+        category.append('Misc')
+    if add_rompers == 1:
+        category.append('Rompers')
+    if add_tops == 1:
+        category.append('Tops')
+
+    x = len(category)
+    categories_toadd = ''
+    for cats in category:
+        index = category.index(cats)
+        if index == (x - 1):
+            categories_toadd += cats
+        else:
+            categories_toadd += cats + ', '
+
+    size = e3.get()
+    is_printed = PrintVar1.get()
+    if is_printed == 1:
+        printed = 'Y'
+    else:
+        printed = 'N'
+    is_sewn = SewnVar1.get()
+    if is_sewn == 1:
+        sewn = 'Y'
+    else:
+        sewn = 'N'
+    notes = e6.get()
+
+    data_toadd = {'Pattern Name': name, 'Category': categories_toadd, 'Size': size, 'Printed Pattern': printed, 'Sewn': sewn, 'Notes': notes}
+    master.destroy()
+
+finish = tkinter.Button(frame, text = 'Finished', command=get_data, height=2, width=14, pady=2)
 finish.grid(row=7, column=3, columnspan=2, sticky='W')
 
 master.mainloop()
 
-
-
-
-'''
-add_bathers = CheckVar1.get()
-add_bottoms = CheckVar2.get()
-add_dresses = CheckVar3.get()
-add_jumpers = CheckVar4.get()
-add_male = CheckVar5.get()
-add_misc = CheckVar6.get()
-add_rompers = CheckVar7.get()
-add_tops = CheckVar8.get()
-
-if add_bathers == 1:
-    category.append('Bathers')
-if add_bottoms == 1:
-    category.append('Bottoms')
-if add_dresses == 1:
-    category.append('Dresses')
-if add_jumpers == 1:
-    category.append('Jumpers')
-if add_male == 1:
-    category.append('Male')
-if add_misc == 1:
-    category.append('Misc')
-if add_rompers == 1:
-    category.append('Rompers')
-if add_tops == 1:
-    category.append('Tops')
-
-#print(category)
-x = len(category)
-for cats in category:
-    index = category.index(cats)
-    if index == (x - 1):
-        categories_toadd += cats
-    else:
-        categories_toadd += cats + ', '
-
-#print(categories_toadd)'''
+return data_toadd
