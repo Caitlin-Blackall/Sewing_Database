@@ -108,7 +108,7 @@ def enter_data():
         else:
             categories_toadd += cats + ', '
 
-    print(categories_toadd)
+    #print(categories_toadd)
 
 
     size = input('Enter pattern size: ').title()
