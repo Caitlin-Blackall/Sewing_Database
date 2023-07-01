@@ -36,9 +36,11 @@ def enter_data():
     category = []
     categories_toadd = ''
     new_cat = tkinter.Tk()
-    new_cat.title('Select Pattern Category / Categories')
-    frm = ttk.Frame(new_cat, padding=10)
+    new_cat.title('Pattern Category')
+    frm = ttk.Frame(new_cat, padding=20)
     frm.grid()
+    l1 = tkinter.Label(frm, text='Please select category or categories of the new pattern')
+    l1.grid(row=0, column=0)
     #add widgets here
 
     CheckVar1 = tkinter.IntVar()
@@ -49,25 +51,25 @@ def enter_data():
     CheckVar6 = tkinter.IntVar()
     CheckVar7 = tkinter.IntVar()
     CheckVar8 = tkinter.IntVar()
-    C1 = tkinter.Checkbutton(frm, text = 'Bathers', variable=CheckVar1, onvalue = 1, offvalue = 0, height=2, width=20)
-    C2 = tkinter.Checkbutton(frm, text='Bottoms', variable=CheckVar2, onvalue=1, offvalue=0, height=2, width=20)
-    C3 = tkinter.Checkbutton(frm, text='Dresses', variable=CheckVar3, onvalue=1, offvalue=0, height=2, width=20)
-    C4 = tkinter.Checkbutton(frm, text='Jumpers', variable=CheckVar4, onvalue=1, offvalue=0, height=2, width=20)
-    C5 = tkinter.Checkbutton(frm, text='Male', variable=CheckVar5, onvalue=1, offvalue=0, height=2, width=20)
-    C6 = tkinter.Checkbutton(frm, text='Misc', variable=CheckVar6, onvalue=1, offvalue=0, height=2, width=20)
-    C7 = tkinter.Checkbutton(frm, text='Rompers', variable=CheckVar7, onvalue=1, offvalue=0, height=2, width=20)
-    C8 = tkinter.Checkbutton(frm, text='Tops', variable=CheckVar8, onvalue=1, offvalue=0, height=2, width=20)
+    C1 = tkinter.Checkbutton(frm, text = 'Bathers', variable=CheckVar1, onvalue = 1, offvalue = 0, height=3, width=10)
+    C2 = tkinter.Checkbutton(frm, text='Bottoms', variable=CheckVar2, onvalue=1, offvalue=0, height=3, width=10)
+    C3 = tkinter.Checkbutton(frm, text='Dresses', variable=CheckVar3, onvalue=1, offvalue=0, height=3, width=10)
+    C4 = tkinter.Checkbutton(frm, text='Jumpers', variable=CheckVar4, onvalue=1, offvalue=0, height=3, width=10)
+    C5 = tkinter.Checkbutton(frm, text='Male', variable=CheckVar5, onvalue=1, offvalue=0, height=3, width=7)
+    C6 = tkinter.Checkbutton(frm, text='Misc', variable=CheckVar6, onvalue=1, offvalue=0, height=3, width=7)
+    C7 = tkinter.Checkbutton(frm, text='Rompers', variable=CheckVar7, onvalue=1, offvalue=0, height=3, width=10)
+    C8 = tkinter.Checkbutton(frm, text='Tops', variable=CheckVar8, onvalue=1, offvalue=0, height=3, width=7)
     finish = tkinter.Button(frm, text = 'Press to finish', command=new_cat.destroy)
 
-    C1.pack()
-    C2.pack()
-    C3.pack()
-    C4.pack()
-    C5.pack()
-    C6.pack()
-    C7.pack()
-    C8.pack()
-    finish.pack(padx=20)
+    C1.grid(row=1, column=0, sticky='W')
+    C2.grid(row=2, column=0, sticky='W')
+    C3.grid(row=3, column=0, sticky='W')
+    C4.grid(row=4, column=0, sticky='W')
+    C5.grid(row=5, column=0, sticky='W')
+    C6.grid(row=6, column=0, sticky='W')
+    C7.grid(row=7, column=0, sticky='W')
+    C8.grid(row=8, column=0, sticky='W')
+    finish.grid(row=9, column=2, sticky='E')
 
     new_cat.mainloop()
 
@@ -106,7 +108,7 @@ def enter_data():
         else:
             categories_toadd += cats + ', '
 
-    #print(categories_toadd)
+    print(categories_toadd)
 
 
     size = input('Enter pattern size: ').title()
