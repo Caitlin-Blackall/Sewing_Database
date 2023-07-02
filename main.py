@@ -90,16 +90,6 @@ def enter_data():
         global data_toadd
         name = e1.get()
 
-        check = check_data(name)
-        if check == True:
-            master.destroy()
-            print('This pattern already exists')
-            next_steps = input('Do you want to do something else? Y/N ').upper()
-            if next_steps == 'Y':
-                run()
-            else:
-                return None
-
         category = []
         add_bathers = CheckVar1.get()
         add_bottoms = CheckVar2.get()
@@ -149,8 +139,13 @@ def enter_data():
             sewn = 'N'
         notes = e6.get()
 
-        data_toadd = {'Pattern Name': name, 'Category': categories_toadd, 'Size': size, 'Printed Pattern': printed,
+        check = check_data(name)
+        if check == True:
+            data_toadd = 'Cannot Enter'
+        else:
+            data_toadd = {'Pattern Name': name, 'Category': categories_toadd, 'Size': size, 'Printed Pattern': printed,
                       'Sewn': sewn, 'Notes': notes}
+
         master.destroy()
 
     finish = tkinter.Button(frame, text='Finished', command=get_data, height=2, width=14, pady=2)
@@ -166,8 +161,6 @@ def check_data(name):
         for row in spreadsheet:
             if row['Pattern Name'] == name:
                 return True
-            else:
-                return False
 
 def search():
     parameter = input('Do you want to search by pattern category (A) or printed patterns (B)? ').upper()
@@ -178,14 +171,25 @@ def search():
 def update():
     print('Done')
 
+def already_exists():
+    print('This pattern already exists')
+    next_steps = input('Do you want to do something else? Y/N ').upper()
+    if next_steps == 'Y':
+        run()
+    else:
+        quit()
+
 def run():
     run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
     if run_option == 'S':
         return search()
     elif run_option == 'A':
         data_toadd = enter_data()
-        spreadsheet = create_spreadsheet(data_toadd)
-        return spreadsheet
+        if data_toadd == 'Cannot Enter':
+            already_exists()
+        else:
+            spreadsheet = create_spreadsheet(data_toadd)
+            return spreadsheet
     elif run_option == 'U':
         return update()
     elif run_option == 'Q':
