@@ -180,12 +180,33 @@ def update():
     print('Done')
 
 def already_exists():
-    print('This pattern already exists')
-    next_steps = input('Do you want to do something else? Y/N ').upper()
-    if next_steps == 'Y':
+    def try_again():
+        third.destroy()
         run()
-    else:
+
+    def quit_program():
+        third.destroy()
         quit()
+
+    third = tkinter.Tk()
+    third.title('Error')
+    frame = ttk.Frame(third, padding=5)
+    frame.grid()
+
+    message = tkinter.Label(frame, text='Error - This pattern already exists', font=('Helvetica 25 bold'), pady=10)
+    message.grid(row=0, column=1, columnspan=4)
+
+    instructions = tkinter.Label(frame, text='Please select from the following options to continue',
+                                 font=('Helvetica 18'), pady=10)
+    instructions.grid(row=1, column=0, columnspan=4)
+
+    try_again = tkinter.Button(frame, text='Try Again', command=try_again, height=2, width=14, pady=2)
+    try_again.grid(row=2, column=1, columnspan=2, sticky='W')
+
+    exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=2, width=14, pady=2)
+    exit_database.grid(row=2, column=3, columnspan=2, sticky='E')
+
+    third.mainloop()
 
 def interface():
     def add_pattern():
@@ -261,3 +282,8 @@ def run():
         run()
 
 run()
+
+'''from tkinter_testing import test_function
+def run():
+    test_function()
+run()'''
