@@ -88,6 +88,7 @@ def enter_data():
 
     def get_data():
         global data_toadd
+
         name = e1.get()
 
         category = []
@@ -127,11 +128,17 @@ def enter_data():
                 categories_toadd += cats + ', '
 
         size = e3.get()
+        try:
+            size = size.upper()
+        except:
+            size = size
+
         is_printed = PrintVar1.get()
         if is_printed == 1:
             printed = 'Y'
         else:
             printed = 'N'
+
         is_sewn = SewnVar1.get()
         if is_sewn == 1:
             sewn = 'Y'
@@ -139,6 +146,7 @@ def enter_data():
             sewn = 'N'
         notes = e6.get()
 
+        name = name.title()
         check = check_data(name)
         if check == True:
             data_toadd = 'Cannot Enter'
@@ -179,8 +187,62 @@ def already_exists():
     else:
         quit()
 
+def interface():
+    def add_pattern():
+        global run_option
+        sec.destroy()
+        run_option = 'A'
+        return run_option
+
+    def search_pattern():
+        global run_option
+        sec.destroy()
+        run_option = 'S'
+        return run_option
+
+    def update_pattern():
+        global run_option
+        sec.destroy()
+        run_option = 'U'
+        return run_option
+
+    def quit_program():
+        global run_option
+        sec.destroy()
+        run_option = 'Q'
+        return run_option
+
+    sec = tkinter.Tk()
+    sec.title('Sewing Database')
+    frm = ttk.Frame(sec, padding=5)
+    frm.grid()
+
+    welcome = tkinter.Label(frm, text='Welcome to the Sewing Pattern Database!', font=('Helvetica 25 bold'), pady=10)
+    welcome.grid(row=0, column=1, columnspan=7)
+
+    instructions = tkinter.Label(frm, text='Please select from the following options to continue',
+                                 font=('Helvetica 18'), pady=10)
+    instructions.grid(row=1, column=0, columnspan=7)
+
+    add = tkinter.Button(frm, text='Add Pattern', command=add_pattern, height=2, width=14, pady=2)
+    add.grid(row=7, column=1, columnspan=2, sticky='W')
+
+    search = tkinter.Button(frm, text='Search Patterns', command=search_pattern, height=2, width=14, pady=2)
+    search.grid(row=7, column=3, columnspan=2, sticky='W')
+
+    update = tkinter.Button(frm, text='Update Pattern', command=update_pattern, height=2, width=14, pady=2)
+    update.grid(row=7, column=5, columnspan=2, sticky='W')
+
+    exit_database = tkinter.Button(frm, text='Quit', command=quit_program, height=1, width=7, pady=2)
+    exit_database.grid(row=8, column=6, columnspan=1, sticky='E')
+
+    sec.mainloop()
+
+    return run_option
+
 def run():
-    run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
+    #run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
+    run_option = interface()
     if run_option == 'S':
         return search()
     elif run_option == 'A':
