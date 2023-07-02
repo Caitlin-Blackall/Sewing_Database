@@ -86,6 +86,11 @@ def enter_data():
     e6 = tkinter.Entry(frame, width=38)
     e6.grid(row=6, column=1, columnspan=4, pady=2, ipady=15)
 
+    def go_back():
+        global data_toadd
+        master.destroy()
+        data_toadd = 'Go Back'
+        return data_toadd
     def get_data():
         global data_toadd
 
@@ -156,6 +161,9 @@ def enter_data():
 
         master.destroy()
 
+    go_back = tkinter.Button(frame, text='Go Back', command=go_back, height=1, width=7, pady=2)
+    go_back.grid(row=7, column=0, columnspan=1, sticky='W')
+
     finish = tkinter.Button(frame, text='Finished', command=get_data, height=2, width=14, pady=2)
     finish.grid(row=7, column=3, columnspan=2, sticky='W')
 
@@ -171,10 +179,56 @@ def check_data(name):
                 return True
 
 def search():
-    parameter = input('Do you want to search by pattern category (A) or printed patterns (B)? ').upper()
+    def search_bycategory():
+        global search_option
+        fourth.destroy()
+        search_option = 'Cat'
+        return search_option
+
+    def search_byavailability():
+        global search_option
+        fourth.destroy()
+        search_option = 'Avail'
+        return search_option
+
+    def go_back():
+        global search_option
+        fourth.destroy()
+        search_option = 'Go Back'
+        return search_option
+
+    fourth = tkinter.Tk()
+    fourth.title('Database Search')
+    frame = ttk.Frame(fourth, padding=5)
+    frame.grid()
+
+    instructions = tkinter.Label(frame, text='Please select how you want to search the database',
+                                 font=('Helvetica 18'), pady=10)
+    instructions.grid(row=0, column=0, columnspan=4)
+
+    by_category = tkinter.Button(frame, text='By Category', command=search_bycategory, height=2, width=14, pady=2)
+    by_category.grid(row=1, column=0, columnspan=2, sticky='W')
+
+    by_availability = tkinter.Button(frame, text='By Availability', command=search_byavailability, height=2, width=14, pady=2)
+    by_availability.grid(row=1, column=2, columnspan=2, sticky='E')
+
+    go_back = tkinter.Button(frame, text='Go Back', command=go_back, height=1, width=7, pady=2)
+    go_back.grid(row=8, column=3, columnspan=1, sticky='E')
+
+    fourth.mainloop()
+
+    if search_option == 'Cat':
+        print('cat')
+    elif search_option == 'Avail':
+        print('avail')
+    elif search_option == 'Go Back':
+        run()
+    else:
+        return None
+    '''parameter = input('Do you want to search by pattern category (A) or printed patterns (B)? ').upper()
     if parameter == 'A':
         item = 'Yay'
-        print('The pattern/s that match the search are {}'.format(item))
+        print('The pattern/s that match the search are {}'.format(item))'''
 
 def update():
     print('Done')
@@ -270,6 +324,8 @@ def run():
         data_toadd = enter_data()
         if data_toadd == 'Cannot Enter':
             already_exists()
+        elif data_toadd == 'Go Back':
+            run()
         else:
             spreadsheet = create_spreadsheet(data_toadd)
             return spreadsheet
