@@ -52,6 +52,14 @@ would allow further flexibility in the application of the project
 as well as allow me to work on the design elements of the 
 presentation more.
 
+It would also be great to add an option to sort by category 
+as well as by availability of patterns. This would make the 
+database more user-friendly and better for the application that 
+I want. Furthermore, making an option of ensuring categories 
+are exact matches as well (ie. searching by Dresses and Tops will 
+only result in matches that are BOTH Dresses and Tops, rather than 
+either Dresses or Tops)
+
 ### Steps to Complete:
 + Being able to add patterns to the database - *done*
 + Checking if these patterns are already on the database - *done*
