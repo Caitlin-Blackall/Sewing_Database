@@ -488,6 +488,36 @@ def interface():
 
     return run_option
 
+def added_message():
+    def quit_program():
+        global add_message
+        eight.destroy()
+        add_message = 'Q'
+        return add_message
+
+    def start_again():
+        global add_message
+        eight.destroy()
+        add_message = 'Start Again'
+        return add_message
+
+    eight = tkinter.Tk()
+    eight.title('Done')
+    frame = ttk.Frame(eight, padding=5)
+    frame.grid()
+
+    label_1 = tkinter.Label(frame, text='Pattern Succesfully Added to Database!', pady=10, font=('Helvetica 18'))
+    label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+    start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+    start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+    exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+    exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+    eight.mainloop()
+
+    return add_message
 def run():
     #run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
     run_option = interface()
@@ -500,8 +530,14 @@ def run():
         elif data_toadd == 'Go Back':
             run()
         else:
-            spreadsheet = create_spreadsheet(data_toadd)
-            return spreadsheet
+            #spreadsheet = create_spreadsheet(data_toadd)
+            #return spreadsheet
+            create_spreadsheet(data_toadd)
+            add_message = added_message()
+            if add_message == 'Q':
+                return None
+            else:
+                run()
     elif run_option == 'U':
         return update()
     elif run_option == 'Q':
