@@ -218,7 +218,32 @@ def search():
     fourth.mainloop()
 
     if search_option == 'Cat':
-        by_cat()
+        x = by_cat()
+
+        def start_again():
+            six.destroy()
+            run()
+
+        def quit_program():
+            six.destroy()
+            quit()
+
+        six = tkinter.Tk()
+        six.title('Search Results')
+        frame = ttk.Frame(six, padding=5)
+        frame.grid()
+
+        label_1 = tkinter.Label(frame, text=x, pady=10,  font=('Helvetica 18'))
+        label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+        start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+        start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+        exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+        exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+        six.mainloop()
+
     elif search_option == 'Avail':
         print('avail')
     elif search_option == 'Go Back':
@@ -232,6 +257,7 @@ def by_cat():
         search()
 
     def cats_tosearchby():
+        global output_statement
         categories_tosearch = []
         add_bathers = CheckVar1.get()
         add_bottoms = CheckVar2.get()
@@ -275,12 +301,14 @@ def by_cat():
             else:
                 finalnames_bycat += '\n' + name
         if x == 0:
-            print('There are no pattern matches.')
+            output_statement = 'There are no pattern matches.'
         elif x == 1:
-            print('There is 1 pattern match.\nThe pattern is: {}.'.format(finalnames_bycat))
+            output_statement = 'There is 1 pattern match.\n\nThe pattern is: {}.'.format(finalnames_bycat)
         else:
-            print('There are {} pattern matches.\nThe patterns are:\n{}'.format(x, finalnames_bycat))
-        quit()
+            output_statement = 'There are {} pattern matches.\n\nThe patterns are:\n{}'.format(x, finalnames_bycat)
+
+        five.destroy()
+        return output_statement
 
     five = tkinter.Tk()
     five.title('Search by Category')
@@ -321,6 +349,8 @@ def by_cat():
     start_search.grid(row=3, column=3, columnspan=1, sticky='E')
 
     five.mainloop()
+
+    return output_statement
 
 def update():
     print('Done')
