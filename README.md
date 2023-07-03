@@ -58,14 +58,20 @@ database more user-friendly and better for the application that
 I want. Furthermore, making an option of ensuring categories 
 are exact matches as well (ie. searching by Dresses and Tops will 
 only result in matches that are BOTH Dresses and Tops, rather than 
-either Dresses or Tops)
+either Dresses or Tops).
+
+?Linking the documents to the search feature so that the appropriate 
+pattern can be opened following the search would be great. This 
+may also link to a feature of just being able to open a particular 
+file.
 
 ### Steps to Complete:
 + Being able to add patterns to the database - *done*
 + Checking if these patterns are already on the database - *done*
 + Adding multiple categories - *done*
-+ Searching the database for patterns
++ Searching the database for patterns - *done*
 + Updating pattern information
 + Adding pictures to the pattern information
 + Selecting pattern category (ie. not just typing for error handling purposes) - *done*
-+
++ ?Being able to click and open the relevant file
++ ?Open a sewing pattern
