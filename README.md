@@ -37,7 +37,8 @@ get bigger quite quickly and it can be hard to keep track of
 where I was up to at times.
 
 
-3. 
+3. Making sure that you always destroy tkinter loops for all options 
+options otherwise it will raise an error
 
 #### Challenges
 + Learning tkinter and error handling within this!

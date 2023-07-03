@@ -245,12 +245,63 @@ def search():
         six.mainloop()
 
     elif search_option == 'Avail':
-        print('avail')
+        x = by_avail()
+
+        def start_again():
+            seven.destroy()
+            run()
+
+        def quit_program():
+            seven.destroy()
+            quit()
+
+        seven = tkinter.Tk()
+        seven.title('Search Results')
+        frame = ttk.Frame(seven, padding=5)
+        frame.grid()
+
+        label_1 = tkinter.Label(frame, text=x, pady=10, font=('Helvetica 18'))
+        label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+        start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+        start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+        exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+        exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+        seven.mainloop()
+
     elif search_option == 'Go Back':
+        fourth.destroy()
         run()
     else:
+        fourth.destroy()
         return None
 
+def by_avail():
+    with open('data.csv', 'r') as csv_file:
+        spreadsheet = csv.DictReader(csv_file)
+        pattern_names = []
+        for row in spreadsheet:
+            if row['Printed Pattern'] == 'Y':
+                pattern_names.append(row['Pattern Name'])
+    pattern_names = list(dict.fromkeys(pattern_names))
+    finalnames_byavail = ''
+    x = len(pattern_names)
+    for name in pattern_names:
+        index = pattern_names.index(name)
+        if index == 0:
+            finalnames_byavail += name
+        else:
+            finalnames_byavail += '\n' + name
+    if x == 0:
+        output_statement_byavail = 'There are no pattern matches.'
+    elif x == 1:
+        output_statement_byavail = 'There is 1 pattern match.\n\nThe pattern is: {}.'.format(finalnames_byavail)
+    else:
+        output_statement_byavail = 'There are {} pattern matches.\n\nThe patterns are:\n{}'.format(x, finalnames_byavail)
+
+    return output_statement_byavail
 def by_cat():
     def go_back():
         five.destroy()
