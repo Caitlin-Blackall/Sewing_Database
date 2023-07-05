@@ -2,16 +2,19 @@ import csv
 import tkinter
 from tkinter import ttk
 
+import numpy
+import pandas as pd
+
 def create_spreadsheet(data_toadd):
     data = data_toadd
     field_names = ['Pattern Name', 'Category', 'Size', 'Printed Pattern', 'Sewn', 'Notes']
     count = 0
-    with open('data.csv', 'r') as data_csv:
+    with open('data.csv', 'r', newline='') as data_csv:
         base_spreadsheet = csv.DictReader(data_csv)
         for row in base_spreadsheet:
             count += 1
         data_csv.close()
-    with open('data.csv', 'a') as data_csv:
+    with open('data.csv', 'a', newline='') as data_csv:
         base_spreadsheet = csv.DictWriter(data_csv, fieldnames=field_names)
         if count == 0:
             base_spreadsheet.writeheader()
@@ -95,6 +98,7 @@ def enter_data():
         global data_toadd
 
         name = e1.get()
+        name = name.title()
 
         category = []
         add_bathers = CheckVar1.get()
@@ -404,7 +408,120 @@ def by_cat():
     return output_statement
 
 def update():
-    print('Done')
+    # search pattern to update
+    name = input("Enter pattern name: ").title()
+    if check_data(name) is True:
+        section_toupdate = input('Which section do you want to update? ')
+        if section_toupdate == 'Pattern Name':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Pattern Name']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        # load csv file with pandas
+                        df = pd.read_csv('data.csv')
+                        # find the index of the row to update
+                        index = df.index[df['Pattern Name'] == current].tolist()
+                        # update the value in the that row index
+                        df.Pattern_Name[index] = changes
+                        # save the new file WITHOUT pandas adding the column index (index is false)
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+                        quit()
+        elif section_toupdate == 'Category':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Category']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        df = pd.read_csv('data.csv')
+                        index = df.index[df['Category'] == current].tolist()
+                        df.Category[index] = changes
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+                        quit()
+        elif section_toupdate == 'Size':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Size']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        df = pd.read_csv('data.csv')
+                        index = df.index[df['Size'] == current].tolist()
+                        df.Size[index] = changes
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+                        quit()
+        elif section_toupdate == 'Printed Pattern':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Printed Pattern']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        df = pd.read_csv('data.csv')
+                        index = df.index[df['Printed Pattern'] == current].tolist()
+                        df['Printed Pattern'][index] = changes
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+                        quit()
+        elif section_toupdate == 'Sewn':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Sewn']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        df = pd.read_csv('data.csv')
+                        index = df.index[df['Sewn'] == current].tolist()
+                        df.Sewn[index] = changes
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+                        quit()
+        elif section_toupdate == 'Notes':
+            with open('data.csv', 'r') as data_csv:
+                spreadsheet = csv.DictReader(data_csv)
+                for row in spreadsheet:
+                    if row['Pattern Name'] == name:
+                        current = row['Notes']
+                        if current == '':
+                            print('This section is currently empty')
+                        else:
+                            print('The section currently contains the following: {}'.format(current))
+                        changes = input('Enter new text ')
+                        df = pd.read_csv('data.csv')
+                        index = df.index[df['Notes'] == current].tolist()
+                        df.Notes[index] = changes
+                        df.to_csv('data.csv', index=False)
+                        print('Done!')
+    else:
+        print('Cannot find pattern in database. Please select from the options below to continue.')
+    # select option to update
+    # confirm changes
+    #print('Done')
 
 def already_exists():
     def try_again():
