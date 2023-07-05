@@ -1,10 +1,10 @@
 import csv
 import tkinter
 from tkinter import ttk
-
-import numpy
 import pandas as pd
 
+# create the csv file and append with the new data (add headings if needed)
+# return the completed csv file
 def create_spreadsheet(data_toadd):
     data = data_toadd
     field_names = ['Pattern Name', 'Category', 'Size', 'Printed Pattern', 'Sewn', 'Notes']
@@ -23,6 +23,7 @@ def create_spreadsheet(data_toadd):
             base_spreadsheet.writerow(data)
     return base_spreadsheet
 
+# enter, process and return the data that needs to be added to the database (using tkinter as the interface)
 def enter_data():
     master = tkinter.Tk()
     master.title('Add pattern information')
@@ -89,11 +90,15 @@ def enter_data():
     e6 = tkinter.Entry(frame, width=38)
     e6.grid(row=6, column=1, columnspan=4, pady=2, ipady=15)
 
+    # go back button on interface
     def go_back():
         global data_toadd
         master.destroy()
         data_toadd = 'Go Back'
         return data_toadd
+
+    # process the information entered into the interface
+    # return the information in a dictionary that can then be put into the database
     def get_data():
         global data_toadd
 
@@ -175,6 +180,9 @@ def enter_data():
 
     return data_toadd
 
+# used in two ways - when adding a pattern and when updating a pattern
+# checks if the pattern exists in the database (so it won't be re-added and so a non-existing pattern won't be updated)
+# return a Boolean
 def check_data(name):
     with open('data.csv', 'r') as data_csv:
         spreadsheet = csv.DictReader(data_csv)
@@ -182,19 +190,27 @@ def check_data(name):
             if row['Pattern Name'] == name:
                 return True
 
+# searches the database for patterns that match either categories or availability (ie. has the pattern been printed)
+# returns search options and then can either return to the entry screen of the database or close the database
 def search():
+    # called by selecting the category option
+    # returns search_option which is then processed by the main function body
     def search_bycategory():
         global search_option
         fourth.destroy()
         search_option = 'Cat'
         return search_option
 
+    # called by selecting the availability option
+    # returns search_option which is then processed by the main function body
     def search_byavailability():
         global search_option
         fourth.destroy()
         search_option = 'Avail'
         return search_option
 
+    # return to the search option menu
+    # returns search_option which is then processed by the main function body
     def go_back():
         global search_option
         fourth.destroy()
@@ -282,6 +298,8 @@ def search():
         fourth.destroy()
         return None
 
+# searches the database by availability of patterns
+# returns a string with the search results that is used by the search function
 def by_avail():
     with open('data.csv', 'r') as csv_file:
         spreadsheet = csv.DictReader(csv_file)
@@ -306,11 +324,17 @@ def by_avail():
         output_statement_byavail = 'There are {} pattern matches.\n\nThe patterns are:\n{}'.format(x, finalnames_byavail)
 
     return output_statement_byavail
+
+# allows the user to select one or more categories and then searches the database by these options
+# returns a string with the search results that is used by the search function
 def by_cat():
+    # returns to the search option menu
     def go_back():
         five.destroy()
         search()
 
+    # allows the user to select which category or categories to search by
+    # processes this data and returns a string that is used by the serach function
     def cats_tosearchby():
         global output_statement
         categories_tosearch = []
@@ -407,11 +431,14 @@ def by_cat():
 
     return output_statement
 
+# prevents a pattern that already exists in the database from being added again
 def already_exists():
+    # restarts the program
     def try_again():
         third.destroy()
         run()
 
+    # quits the database
     def quit_program():
         third.destroy()
         quit()
@@ -436,125 +463,7 @@ def already_exists():
 
     third.mainloop()
 
-'''def update():
-    # search pattern to update
-    name = input("Enter pattern name: ").title()
-    if check_data(name) is True:
-        section_toupdate = input('Which section do you want to update? ')
-        
-        DONE ABOVE BIT
-        
-        if section_toupdate == 'Pattern Name':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Pattern Name']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        # load csv file with pandas
-                        df = pd.read_csv('data.csv')
-                        # find the index of the row to update
-                        index = df.index[df['Pattern Name'] == current].tolist()
-                        # update the value in the that row index
-                        df.Pattern_Name[index] = changes
-                        # save the new file WITHOUT pandas adding the column index (index is false)
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-                        quit()
-        elif section_toupdate == 'Category':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Category']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        df = pd.read_csv('data.csv')
-                        index = df.index[df['Category'] == current].tolist()
-                        df.Category[index] = changes
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-                        quit()
-        elif section_toupdate == 'Size':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Size']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        df = pd.read_csv('data.csv')
-                        index = df.index[df['Size'] == current].tolist()
-                        df.Size[index] = changes
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-                        quit()
-        elif section_toupdate == 'Printed Pattern':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Printed Pattern']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        df = pd.read_csv('data.csv')
-                        index = df.index[df['Printed Pattern'] == current].tolist()
-                        df['Printed Pattern'][index] = changes
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-                        quit()
-        elif section_toupdate == 'Sewn':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Sewn']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        df = pd.read_csv('data.csv')
-                        index = df.index[df['Sewn'] == current].tolist()
-                        df.Sewn[index] = changes
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-                        quit()
-        elif section_toupdate == 'Notes':
-            with open('data.csv', 'r') as data_csv:
-                spreadsheet = csv.DictReader(data_csv)
-                for row in spreadsheet:
-                    if row['Pattern Name'] == name:
-                        current = row['Notes']
-                        if current == '':
-                            print('This section is currently empty')
-                        else:
-                            print('The section currently contains the following: {}'.format(current))
-                        changes = input('Enter new text ')
-                        df = pd.read_csv('data.csv')
-                        index = df.index[df['Notes'] == current].tolist()
-                        df.Notes[index] = changes
-                        df.to_csv('data.csv', index=False)
-                        print('Done!')
-    else:
-        print('Cannot find pattern in database. Please select from the options below to continue.')
-    # select option to update
-    # confirm changes
-    #print('Done')'''
-
+# updates a pattern by showing the user what information already exists and allowing the user to enter the new information
 def update_bysection(section, name):
     with open('data.csv', 'r') as data_csv:
         spreadsheet = csv.DictReader(data_csv)
@@ -566,20 +475,22 @@ def update_bysection(section, name):
                 else:
                     label_text = 'The {} {} section currently contains the following: {}'.format(name, section, current)
 
+    # returns the user to the beginning of the update section
     def start_again():
         twelve.destroy()
         update()
 
+    # allows the user to confirm the changes to be made and uses pandas to make these changes
     def submit_changes():
         changes = e2.get()
         twelve.destroy()
-        # open file in pandas
+        # load csv file with pandas
         df = pd.read_csv('data.csv')
-        # get the index of the row where the pattern is
+        # get the index of the row where the pattern is to be updated
         index = df.index[df['Pattern Name'] == name].tolist()
-        # make the changes
+        # update the value in that row
         df.iloc[index, df.columns.get_loc(section)] = changes
-        # save the changes WITHOUT adding index names to the file
+        # save the changes WITHOUT adding index names to the file (index=False)
         df.to_csv('data.csv', index=False)
 
         def quit_program():
@@ -627,17 +538,23 @@ def update_bysection(section, name):
 
     twelve.mainloop()
 
+# allows the user to select which pattern and which part of that pattern they want to update
+# returns a tuple (the name of the pattern and the section to be updated) to the main body of the run function
+# the tuple is then processed and passed into the update_bysection function
 def update():
     nine = tkinter.Tk()
     nine.title('Update Pattern')
     frame = ttk.Frame(nine, padding=5)
     frame.grid()
 
+    # returns the user to the opening screen
     def go_back():
         nine.destroy()
-        print('Go Back')
-        quit()
+        run()
 
+    # checks that the pattern to be updated exists in the database initially
+    # if it exists, allows the user to select which pattern section that want to update
+    # if it doesn't exist, allows the user to try again or close the database
     def get_data():
         global name
         name = e1.get()
@@ -645,10 +562,13 @@ def update():
         nine.destroy()
 
         if check_data(name) is True:
+            # returns the user to the beginning of the update pattern process
             def start_again():
                 ten.destroy()
                 update()
 
+            # processes the entered data to determine which pattern section is to be updated
+            # returns a tuple that is then passed to the outer function and utilised to complete the update
             def start_update():
                 global section_toupdate
                 up_patternname = CheckVar1.get()
@@ -703,14 +623,13 @@ def update():
             label_2 = tkinter.Label(frame, text='       ', state='disabled')
             label_2.grid(row=4, column=0, columnspan=2, sticky='W')
 
-            start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+            start_again = tkinter.Button(frame, text='Go Back', command=start_again, height=1, width=7, pady=2)
             start_again.grid(row=5, column=0, columnspan=1, sticky='SW')
 
             finish = tkinter.Button(frame, text='Update', command=start_update, height=2, width=14, pady=2)
             finish.grid(row=5, column=1, columnspan=2, sticky='SW')
 
             ten.mainloop()
-            # quit()
 
         else:
             def quit_program():
@@ -751,6 +670,8 @@ def update():
 
     return section_toupdate, name
 
+# creates the initial user interface using tkinter
+# returns a string that is then utilised to call the appropriate function
 def interface():
     def add_pattern():
         global run_option
@@ -804,6 +725,7 @@ def interface():
 
     return run_option
 
+# provides the user with a message confirming that the pattern has been added to the database
 def added_message():
     def quit_program():
         global add_message
@@ -834,8 +756,12 @@ def added_message():
     eight.mainloop()
 
     return add_message
+
+# runs the function
+# takes a string from the initial interface and then calls the appropriate function (add, search, update)
+# processes relevant information from these functions
+# returns relevant functions to provide the user with options or information
 def run():
-    #run_option = input('Do you want to search (S), add (A), update (U) a pattern or quit (Q)? ').upper()
     run_option = interface()
     if run_option == 'S':
         return search()
@@ -846,8 +772,6 @@ def run():
         elif data_toadd == 'Go Back':
             run()
         else:
-            #spreadsheet = create_spreadsheet(data_toadd)
-            #return spreadsheet
             create_spreadsheet(data_toadd)
             add_message = added_message()
             if add_message == 'Q':
