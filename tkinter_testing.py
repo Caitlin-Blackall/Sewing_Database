@@ -1,35 +1,42 @@
 import csv
 import tkinter
 from tkinter import ttk
+import pandas as pd
 
-'''def test_function():
-    print('yay')
 
+def quit_program():
+    thirteen.destroy()
+    quit()
+
+
+def start_again():
+    thirteen.destroy()
+    run()
+
+thirteen = tkinter.Tk()
+thirteen.title('Done')
+frame = ttk.Frame(thirteen, padding=5)
+frame.grid()
+
+label_1 = tkinter.Label(frame, text='Pattern Succesfully Updated!', pady=10, font=('Helvetica 18'))
+label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+thirteen.mainloop()
+
+
+
+
+
+
+
+'''
 from tkinter_testing import test_function
 def run():
     test_function()
 run()'''
-
-with open('data.csv', 'r') as csv_file:
-    spreadsheet = csv.DictReader(csv_file)
-    pattern_names = []
-    for row in spreadsheet:
-        if option == 'Y' in row['Printed Pattern']:
-            pattern_names.append(row['Pattern Name'])
-pattern_names = list(dict.fromkeys(pattern_names))
-finalnames_byavail = ''
-x = len(pattern_names)
-for name in pattern_names:
-    index = pattern_names.index(name)
-    if index == 0:
-        finalnames_byavail += name
-    else:
-        finalnames_byavail += '\n' + name
-if x == 0:
-    output_statement = 'There are no pattern matches.'
-elif x == 1:
-    output_statement = 'There is 1 pattern match.\n\nThe pattern is: {}.'.format(finalnames_byavail)
-else:
-    output_statement = 'There are {} pattern matches.\n\nThe patterns are:\n{}'.format(x, finalnames_byavail)
-
-return output_statement

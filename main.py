@@ -407,11 +407,43 @@ def by_cat():
 
     return output_statement
 
-def update():
+def already_exists():
+    def try_again():
+        third.destroy()
+        run()
+
+    def quit_program():
+        third.destroy()
+        quit()
+
+    third = tkinter.Tk()
+    third.title('Error')
+    frame = ttk.Frame(third, padding=5)
+    frame.grid()
+
+    message = tkinter.Label(frame, text='Error - This pattern already exists', font=('Helvetica 25 bold'), pady=10)
+    message.grid(row=0, column=1, columnspan=4)
+
+    instructions = tkinter.Label(frame, text='Please select from the following options to continue',
+                                 font=('Helvetica 18'), pady=10)
+    instructions.grid(row=1, column=0, columnspan=4)
+
+    try_again = tkinter.Button(frame, text='Try Again', command=try_again, height=2, width=14, pady=2)
+    try_again.grid(row=2, column=1, columnspan=2, sticky='W')
+
+    exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=2, width=14, pady=2)
+    exit_database.grid(row=2, column=3, columnspan=2, sticky='E')
+
+    third.mainloop()
+
+'''def update():
     # search pattern to update
     name = input("Enter pattern name: ").title()
     if check_data(name) is True:
         section_toupdate = input('Which section do you want to update? ')
+        
+        DONE ABOVE BIT
+        
         if section_toupdate == 'Pattern Name':
             with open('data.csv', 'r') as data_csv:
                 spreadsheet = csv.DictReader(data_csv)
@@ -521,36 +553,203 @@ def update():
         print('Cannot find pattern in database. Please select from the options below to continue.')
     # select option to update
     # confirm changes
-    #print('Done')
+    #print('Done')'''
 
-def already_exists():
-    def try_again():
-        third.destroy()
-        run()
+def update_bysection(section, name):
+    with open('data.csv', 'r') as data_csv:
+        spreadsheet = csv.DictReader(data_csv)
+        for row in spreadsheet:
+            if row['Pattern Name'] == name:
+                current = row[section]
+                if current == '':
+                    label_text = 'The {} {} section is currently empty.'.format(name, section)
+                else:
+                    label_text = 'The {} {} section currently contains the following: {}'.format(name, section, current)
 
-    def quit_program():
-        third.destroy()
-        quit()
+    def start_again():
+        twelve.destroy()
+        update()
 
-    third = tkinter.Tk()
-    third.title('Error')
-    frame = ttk.Frame(third, padding=5)
+    def submit_changes():
+        changes = e2.get()
+        twelve.destroy()
+        # open file in pandas
+        df = pd.read_csv('data.csv')
+        # get the index of the row where the pattern is
+        index = df.index[df['Pattern Name'] == name].tolist()
+        # make the changes
+        df.iloc[index, df.columns.get_loc(section)] = changes
+        # save the changes WITHOUT adding index names to the file
+        df.to_csv('data.csv', index=False)
+
+        def quit_program():
+            thirteen.destroy()
+            quit()
+
+        def start_again():
+            thirteen.destroy()
+            run()
+
+        thirteen = tkinter.Tk()
+        thirteen.title('Done')
+        frame = ttk.Frame(thirteen, padding=5)
+        frame.grid()
+
+        label_1 = tkinter.Label(frame, text='Pattern Succesfully Updated!', pady=10, font=('Helvetica 18'))
+        label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+        start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+        start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+        exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+        exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+        thirteen.mainloop()
+
+    twelve = tkinter.Tk()
+    twelve.title('Update Info')
+    frame = ttk.Frame(twelve, padding=5)
     frame.grid()
 
-    message = tkinter.Label(frame, text='Error - This pattern already exists', font=('Helvetica 25 bold'), pady=10)
-    message.grid(row=0, column=1, columnspan=4)
+    label_1 = tkinter.Label(frame, text=label_text, pady=10)
+    label_1.grid(row=0, column=0, columnspan=10, sticky='W')
 
-    instructions = tkinter.Label(frame, text='Please select from the following options to continue',
-                                 font=('Helvetica 18'), pady=10)
-    instructions.grid(row=1, column=0, columnspan=4)
+    label_2 = tkinter.Label(frame, text='Enter new text: ', pady=10)
+    label_2.grid(row=1, column=0, columnspan=2, sticky='W')
+    e2 = tkinter.Entry(frame)
+    e2.grid(row=1, column=2, columnspan=8, pady=2, ipadx=40, ipady=10)
 
-    try_again = tkinter.Button(frame, text='Try Again', command=try_again, height=2, width=14, pady=2)
-    try_again.grid(row=2, column=1, columnspan=2, sticky='W')
+    start_again = tkinter.Button(frame, text='Go Back', command=start_again, height=1, width=7, pady=2)
+    start_again.grid(row=3, column=0, columnspan=1, sticky='SW')
 
-    exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=2, width=14, pady=2)
-    exit_database.grid(row=2, column=3, columnspan=2, sticky='E')
+    finish = tkinter.Button(frame, text='Submit Changes', command=submit_changes, height=2, width=14, pady=2)
+    finish.grid(row=3, column=9, columnspan=2, sticky='SE')
 
-    third.mainloop()
+    twelve.mainloop()
+
+def update():
+    nine = tkinter.Tk()
+    nine.title('Update Pattern')
+    frame = ttk.Frame(nine, padding=5)
+    frame.grid()
+
+    def go_back():
+        nine.destroy()
+        print('Go Back')
+        quit()
+
+    def get_data():
+        global name
+        name = e1.get()
+        name = name.title()
+        nine.destroy()
+
+        if check_data(name) is True:
+            def start_again():
+                ten.destroy()
+                update()
+
+            def start_update():
+                global section_toupdate
+                up_patternname = CheckVar1.get()
+                if up_patternname == 1:
+                    section_toupdate = 'Pattern Name'
+                up_category = CheckVar2.get()
+                if up_category == 2:
+                    section_toupdate = 'Category'
+                up_size = CheckVar3.get()
+                if up_size == 3:
+                    section_toupdate = 'Size'
+                up_printedpattern = CheckVar4.get()
+                if up_printedpattern == 4:
+                    section_toupdate = 'Printed Pattern'
+                up_sewn = CheckVar5.get()
+                if up_sewn == 5:
+                    section_toupdate = 'Sewn'
+                up_notes = CheckVar6.get()
+                if up_notes == 6:
+                    section_toupdate = 'Notes'
+                ten.destroy()
+
+                return section_toupdate, name
+
+            ten = tkinter.Tk()
+            ten.title('Update Pattern')
+            frame = ttk.Frame(ten, padding=5)
+            frame.grid()
+
+            label_1 = tkinter.Label(frame, text="Select section to update:", pady=10, font=('Helvetica 18'))
+            label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+            CheckVar1 = tkinter.IntVar()
+            CheckVar2 = tkinter.IntVar()
+            CheckVar3 = tkinter.IntVar()
+            CheckVar4 = tkinter.IntVar()
+            CheckVar5 = tkinter.IntVar()
+            CheckVar6 = tkinter.IntVar()
+            C1 = tkinter.Radiobutton(frame, text='Pattern Name', variable=CheckVar1, value=1)
+            C2 = tkinter.Radiobutton(frame, text='Category', variable=CheckVar2, value=2)
+            C3 = tkinter.Radiobutton(frame, text='Size', variable=CheckVar3, value=3)
+            C4 = tkinter.Radiobutton(frame, text='Printed Pattern', variable=CheckVar4, value=4)
+            C5 = tkinter.Radiobutton(frame, text='Sewn', variable=CheckVar5, value=5)
+            C6 = tkinter.Radiobutton(frame, text='Notes', variable=CheckVar6, value=6)
+            C1.grid(row=1, column=0, sticky='W')
+            C2.grid(row=2, column=0, sticky='W')
+            C3.grid(row=3, column=0, sticky='W')
+            C4.grid(row=1, column=1, sticky='W')
+            C5.grid(row=2, column=1, sticky='W')
+            C6.grid(row=3, column=1, sticky='W')
+
+            label_2 = tkinter.Label(frame, text='       ', state='disabled')
+            label_2.grid(row=4, column=0, columnspan=2, sticky='W')
+
+            start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+            start_again.grid(row=5, column=0, columnspan=1, sticky='SW')
+
+            finish = tkinter.Button(frame, text='Update', command=start_update, height=2, width=14, pady=2)
+            finish.grid(row=5, column=1, columnspan=2, sticky='SW')
+
+            ten.mainloop()
+            # quit()
+
+        else:
+            def quit_program():
+                ten_else.destroy()
+                quit()
+
+            def start_again():
+                ten_else.destroy()
+                update()
+
+            ten_else = tkinter.Tk()
+            ten_else.title('Error')
+            frame = ttk.Frame(ten_else, padding=5)
+            frame.grid()
+
+            label_1 = tkinter.Label(frame, text="Pattern Doesn't Exist - Please Try Again", pady=10,
+                                    font=('Helvetica 18'))
+            label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+
+            start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
+            start_again.grid(row=1, column=0, columnspan=1, sticky='W')
+
+            exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
+            exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
+
+    label_1 = tkinter.Label(frame, text='Enter name of pattern to update:', pady=10)
+    label_1.grid(row=0, column=0, columnspan=2, sticky='W')
+    e1 = tkinter.Entry(frame)
+    e1.grid(row=0, column=2, columnspan=2, pady=3)
+
+    go_back = tkinter.Button(frame, text='Go Back', command=go_back, height=1, width=7, pady=2)
+    go_back.grid(row=1, column=0, columnspan=1, sticky='SW')
+
+    finish = tkinter.Button(frame, text='Update Pattern', command=get_data, height=2, width=14, pady=2)
+    finish.grid(row=1, column=3, columnspan=2, sticky='W')
+
+    nine.mainloop()
+
+    return section_toupdate, name
 
 def interface():
     def add_pattern():
@@ -656,7 +855,10 @@ def run():
             else:
                 run()
     elif run_option == 'U':
-        return update()
+        section_name = update()
+        section_toupdate = section_name[0]
+        name = section_name[1]
+        return update_bysection(section_toupdate, name)
     elif run_option == 'Q':
         return None
     else:
