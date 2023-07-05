@@ -3,35 +3,18 @@ import tkinter
 from tkinter import ttk
 import pandas as pd
 
-
-def quit_program():
-    thirteen.destroy()
-    quit()
-
-
-def start_again():
-    thirteen.destroy()
-    run()
-
-thirteen = tkinter.Tk()
-thirteen.title('Done')
-frame = ttk.Frame(thirteen, padding=5)
-frame.grid()
-
-label_1 = tkinter.Label(frame, text='Pattern Succesfully Updated!', pady=10, font=('Helvetica 18'))
-label_1.grid(row=0, column=0, columnspan=2, sticky='W')
-
-start_again = tkinter.Button(frame, text='Start Again', command=start_again, height=1, width=7, pady=2)
-start_again.grid(row=1, column=0, columnspan=1, sticky='W')
-
-exit_database = tkinter.Button(frame, text='Quit', command=quit_program, height=1, width=7, pady=2)
-exit_database.grid(row=1, column=1, columnspan=1, sticky='E')
-
-thirteen.mainloop()
-
-
-
-
+''' FROM README.md
+### Steps to Complete:
++ Being able to add patterns to the database - *done*
++ Checking if these patterns are already on the database - *done*
++ Adding multiple categories - *done*
++ Searching the database for patterns - *done*
++ Updating pattern information - *done*
++ Selecting pattern category (ie. not just typing for error handling purposes) - *done*
++ ?Adding pictures to the pattern information
++ ?Being able to click and open the relevant file
++ ?Open a sewing pattern
+'''
 
 
 
