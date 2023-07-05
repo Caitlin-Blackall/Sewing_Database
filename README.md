@@ -16,8 +16,14 @@ project and made sure I was making regular commits.
 
 I then started with writing code to open, read and write 
 to a CSV file. From here, I created functions in order to be 
-able to add, search and update patterns within the database. 
-I used tkinter to make the interface more user-friendly.
+able to add, search and update patterns within the database.
+
+I used tkinter to make the interface more user-friendly. I ended 
+up creating a lot of interfaces which did end up being a little 
+confusing by the end.
+
+I also used pandas with the 'Updating' section as this made it 
+easier to edit the correct information.
 
 #### Learning
 1. The biggest skill that I learnt throughout this process was using 
@@ -40,9 +46,15 @@ where I was up to at times.
 3. Making sure that you always destroy tkinter loops for all options 
 options otherwise it will raise an error
 
+
+4. Using pandas to update CSV files! It would be useful to explore 
+how this program works in more detail so that I can manipulate 
+CSV files more easily in future.
+
 #### Challenges
 + Learning tkinter and error handling within this!
-+ 
++ Opening, finding the right cell and editing this information 
+with pandas 
 
 #### Future Work
 It would be great to revisit this database in future when I have 
@@ -60,6 +72,11 @@ are exact matches as well (ie. searching by Dresses and Tops will
 only result in matches that are BOTH Dresses and Tops, rather than 
 either Dresses or Tops).
 
+Eventually, being able to make this database a web application 
+would be fantastic and this is definitely something I would like 
+to explore in future as it would help with design aspects as well 
+as useability.
+
 ?Linking the documents to the search feature so that the appropriate 
 pattern can be opened following the search would be great. This 
 may also link to a feature of just being able to open a particular 
@@ -70,7 +87,7 @@ file.
 + Checking if these patterns are already on the database - *done*
 + Adding multiple categories - *done*
 + Searching the database for patterns - *done*
-+ Updating pattern information
++ Updating pattern information - *done*
 + Adding pictures to the pattern information
 + Selecting pattern category (ie. not just typing for error handling purposes) - *done*
 + ?Being able to click and open the relevant file
