@@ -3,9 +3,9 @@ import tkinter
 from tkinter import ttk
 import pandas as pd
 
-# create the csv file and append with the new data (add headings if needed)
-# return the completed csv file
 def create_spreadsheet(data_toadd):
+    # create the csv file and append with the new data (add headings if needed)
+    # return the completed csv file
     data = data_toadd
     field_names = ['Pattern Name', 'Category', 'Size', 'Printed Pattern', 'Sewn', 'Notes']
     count = 0
@@ -23,8 +23,8 @@ def create_spreadsheet(data_toadd):
             base_spreadsheet.writerow(data)
     return base_spreadsheet
 
-# enter, process and return the data that needs to be added to the database (using tkinter as the interface)
 def enter_data():
+    # enter, process and return the data that needs to be added to the database (using tkinter as the interface)
     master = tkinter.Tk()
     master.title('Add pattern information')
     frame = ttk.Frame(master, padding=5)
@@ -90,16 +90,16 @@ def enter_data():
     e6 = tkinter.Entry(frame, width=38)
     e6.grid(row=6, column=1, columnspan=4, pady=2, ipady=15)
 
-    # go back button on interface
     def go_back():
+        # go back button on interface
         global data_toadd
         master.destroy()
         data_toadd = 'Go Back'
         return data_toadd
 
-    # process the information entered into the interface
-    # return the information in a dictionary that can then be put into the database
     def get_data():
+        # process the information entered into the interface
+        # return the information in a dictionary that can then be put into the database
         global data_toadd
 
         name = e1.get()
@@ -180,38 +180,38 @@ def enter_data():
 
     return data_toadd
 
-# used in two ways - when adding a pattern and when updating a pattern
-# checks if the pattern exists in the database (so it won't be re-added and so a non-existing pattern won't be updated)
-# return a Boolean
 def check_data(name):
+    # used in two ways - when adding a pattern and when updating a pattern
+    # checks if the pattern exists in the database (so it won't be re-added and so a non-existing pattern won't be updated)
+    # return a Boolean
     with open('data.csv', 'r') as data_csv:
         spreadsheet = csv.DictReader(data_csv)
         for row in spreadsheet:
             if row['Pattern Name'] == name:
                 return True
 
-# searches the database for patterns that match either categories or availability (ie. has the pattern been printed)
-# returns search options and then can either return to the entry screen of the database or close the database
 def search():
-    # called by selecting the category option
-    # returns search_option which is then processed by the main function body
+    # searches the database for patterns that match either categories or availability (ie. has the pattern been printed)
+    # returns search options and then can either return to the entry screen of the database or close the database
     def search_bycategory():
+        # called by selecting the category option
+        # returns search_option which is then processed by the main function body
         global search_option
         fourth.destroy()
         search_option = 'Cat'
         return search_option
 
-    # called by selecting the availability option
-    # returns search_option which is then processed by the main function body
     def search_byavailability():
+        # called by selecting the availability option
+        # returns search_option which is then processed by the main function body
         global search_option
         fourth.destroy()
         search_option = 'Avail'
         return search_option
 
-    # return to the search option menu
-    # returns search_option which is then processed by the main function body
     def go_back():
+        # return to the search option menu
+        # returns search_option which is then processed by the main function body
         global search_option
         fourth.destroy()
         search_option = 'Go Back'
@@ -298,9 +298,9 @@ def search():
         fourth.destroy()
         return None
 
-# searches the database by availability of patterns
-# returns a string with the search results that is used by the search function
 def by_avail():
+    # searches the database by availability of patterns
+    # returns a string with the search results that is used by the search function
     with open('data.csv', 'r') as csv_file:
         spreadsheet = csv.DictReader(csv_file)
         pattern_names = []
@@ -325,17 +325,17 @@ def by_avail():
 
     return output_statement_byavail
 
-# allows the user to select one or more categories and then searches the database by these options
-# returns a string with the search results that is used by the search function
 def by_cat():
-    # returns to the search option menu
+    # allows the user to select one or more categories and then searches the database by these options
+    # returns a string with the search results that is used by the search function
     def go_back():
+        # returns to the search option menu
         five.destroy()
         search()
 
-    # allows the user to select which category or categories to search by
-    # processes this data and returns a string that is used by the serach function
     def cats_tosearchby():
+        # allows the user to select which category or categories to search by
+        # processes this data and returns a string that is used by the search function
         global output_statement
         categories_tosearch = []
         add_bathers = CheckVar1.get()
@@ -431,15 +431,15 @@ def by_cat():
 
     return output_statement
 
-# prevents a pattern that already exists in the database from being added again
 def already_exists():
-    # restarts the program
+    # prevents a pattern that already exists in the database from being added again
     def try_again():
+        # restarts the program
         third.destroy()
         run()
 
-    # quits the database
     def quit_program():
+        # quits the database
         third.destroy()
         quit()
 
@@ -463,8 +463,8 @@ def already_exists():
 
     third.mainloop()
 
-# updates a pattern by showing the user what information already exists and allowing the user to enter the new information
 def update_bysection(section, name):
+    # updates a pattern by showing the user what information already exists and allowing the user to enter the new information
     with open('data.csv', 'r') as data_csv:
         spreadsheet = csv.DictReader(data_csv)
         for row in spreadsheet:
@@ -475,13 +475,13 @@ def update_bysection(section, name):
                 else:
                     label_text = 'The {} {} section currently contains the following: {}'.format(name, section, current)
 
-    # returns the user to the beginning of the update section
     def start_again():
+        # returns the user to the beginning of the update section
         twelve.destroy()
         update()
 
-    # allows the user to confirm the changes to be made and uses pandas to make these changes
     def submit_changes():
+        # allows the user to confirm the changes to be made and uses pandas to make these changes
         changes = e2.get()
         twelve.destroy()
         # load csv file with pandas
@@ -538,38 +538,38 @@ def update_bysection(section, name):
 
     twelve.mainloop()
 
-# allows the user to select which pattern and which part of that pattern they want to update
-# returns a tuple (the name of the pattern and the section to be updated) to the main body of the run function
-# the tuple is then processed and passed into the update_bysection function
 def update():
+    # allows the user to select which pattern and which part of that pattern they want to update
+    # returns a tuple (the name of the pattern and the section to be updated) to the main body of the run function
+    # the tuple is then processed and passed into the update_bysection function
     nine = tkinter.Tk()
     nine.title('Update Pattern')
     frame = ttk.Frame(nine, padding=5)
     frame.grid()
 
-    # returns the user to the opening screen
     def go_back():
+        # returns the user to the opening screen
         nine.destroy()
         run()
 
-    # checks that the pattern to be updated exists in the database initially
-    # if it exists, allows the user to select which pattern section that want to update
-    # if it doesn't exist, allows the user to try again or close the database
     def get_data():
+        # checks that the pattern to be updated exists in the database initially
+        # if it exists, allows the user to select which pattern section that want to update
+        # if it doesn't exist, allows the user to try again or close the database
         global name
         name = e1.get()
         name = name.title()
         nine.destroy()
 
         if check_data(name) is True:
-            # returns the user to the beginning of the update pattern process
             def start_again():
+                # returns the user to the beginning of the update pattern process
                 ten.destroy()
                 update()
 
-            # processes the entered data to determine which pattern section is to be updated
-            # returns a tuple that is then passed to the outer function and utilised to complete the update
             def start_update():
+                # processes the entered data to determine which pattern section is to be updated
+                # returns a tuple that is then passed to the outer function and utilised to complete the update
                 global section_toupdate
                 up_patternname = CheckVar1.get()
                 if up_patternname == 1:
@@ -670,9 +670,9 @@ def update():
 
     return section_toupdate, name
 
-# creates the initial user interface using tkinter
-# returns a string that is then utilised to call the appropriate function
 def interface():
+    # creates the initial user interface using tkinter
+    # returns a string that is then utilised to call the appropriate function
     def add_pattern():
         global run_option
         sec.destroy()
@@ -725,8 +725,8 @@ def interface():
 
     return run_option
 
-# provides the user with a message confirming that the pattern has been added to the database
 def added_message():
+    # provides the user with a message confirming that the pattern has been added to the database
     def quit_program():
         global add_message
         eight.destroy()
@@ -757,11 +757,11 @@ def added_message():
 
     return add_message
 
-# runs the function
-# takes a string from the initial interface and then calls the appropriate function (add, search, update)
-# processes relevant information from these functions
-# returns relevant functions to provide the user with options or information
 def run():
+    # runs the function
+    # takes a string from the initial interface and then calls the appropriate function (add, search, update)
+    # processes relevant information from these functions
+    # returns relevant functions to provide the user with options or information
     run_option = interface()
     if run_option == 'S':
         return search()
@@ -790,8 +790,3 @@ def run():
         run()
 
 run()
-
-'''from tkinter_testing import test_function
-def run():
-    test_function()
-run()'''

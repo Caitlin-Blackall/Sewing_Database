@@ -17,9 +17,10 @@ import pandas as pd
 '''
 
 
-
 '''
 from tkinter_testing import test_function
 def run():
     test_function()
-run()'''
+run()
+this is an example of how you would call a specific function that was saved in tkinter_testing.py from main.py 
+'''
