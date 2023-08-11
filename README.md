@@ -7,6 +7,17 @@ This project stemmed from my hobby of sewing. I have a lot of
 sewing patterns and wanted an easy way to store and search 
 these patterns to find an appropriate pattern.
 
+## Local Dev Set-Up
+### Pre-Requisites:
++ [pip](https://pypi.org/project/pip/)
+
+### Installations:
++ ```pip install tkinter```
++ ```pip install pandas```
+
+### To run:
+1. ```python main.py```
+
 ## Process
 I already had a clear picture of how I wanted this database 
 to look - I needed easy-to-use functions, ability to add pictures 
